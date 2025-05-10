@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "ebY9UNDQaBTUUUYkLAO/uzJJGE3wTprd6xQYxt0Kkx8=",
+  "Source": "NeptunBackend",
+  "BasePath": "_content/NeptunBackend",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}
