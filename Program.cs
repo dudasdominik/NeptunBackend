@@ -33,6 +33,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<IStudentService, StudentService>();
 builder.Services.AddTransient<ITeacherService, TeacherService>();
 builder.Services.AddTransient<ICourseService, CourseService>();
+builder.Services.AddTransient<IExamService, ExamService>();
 builder.Services.AddTransient<NeptunService>();
 
 
