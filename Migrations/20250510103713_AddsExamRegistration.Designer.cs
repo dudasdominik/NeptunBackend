@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NeptunBackend.Data;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace NeptunBackend.Migrations
 {
     [DbContext(typeof(NeptunDbContext))]
-    partial class NeptunDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250510103713_AddsExamRegistration")]
+    partial class AddsExamRegistration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -182,6 +185,9 @@ namespace NeptunBackend.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<Guid?>("ExamId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("text");
@@ -202,6 +208,8 @@ namespace NeptunBackend.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("NeptunCode");
+
+                    b.HasIndex("ExamId");
 
                     b.ToTable("Students");
                 });
@@ -281,7 +289,7 @@ namespace NeptunBackend.Migrations
             modelBuilder.Entity("NeptunBackend.Models.Exam", b =>
                 {
                     b.HasOne("NeptunBackend.Models.Course", "Course")
-                        .WithMany("Exams")
+                        .WithMany()
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -292,7 +300,7 @@ namespace NeptunBackend.Migrations
             modelBuilder.Entity("NeptunBackend.Models.ExamRegistration", b =>
                 {
                     b.HasOne("NeptunBackend.Models.Exam", "Exam")
-                        .WithMany("ExamRegistrations")
+                        .WithMany()
                         .HasForeignKey("ExamId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -308,14 +316,16 @@ namespace NeptunBackend.Migrations
                     b.Navigation("Student");
                 });
 
-            modelBuilder.Entity("NeptunBackend.Models.Course", b =>
+            modelBuilder.Entity("NeptunBackend.Models.Student", b =>
                 {
-                    b.Navigation("Exams");
+                    b.HasOne("NeptunBackend.Models.Exam", null)
+                        .WithMany("Participants")
+                        .HasForeignKey("ExamId");
                 });
 
             modelBuilder.Entity("NeptunBackend.Models.Exam", b =>
                 {
-                    b.Navigation("ExamRegistrations");
+                    b.Navigation("Participants");
                 });
 
             modelBuilder.Entity("NeptunBackend.Models.Student", b =>

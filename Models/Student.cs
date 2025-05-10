@@ -8,6 +8,7 @@ public class Student : Person
     public State State { get; set; }
 
     public virtual List<Course> Courses { get; set; } = new List<Course>();
+    public List<ExamRegistration> ExamRegistrations { get; set; } = new();
 
     public Student(string firstName, string lastName, string email, string phone, string address, string password, DateTime birthDate, State state) : base(firstName, lastName, email, phone, address, password, birthDate)
     {

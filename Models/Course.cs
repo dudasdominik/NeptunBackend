@@ -15,6 +15,8 @@ public class Course
     public Teacher Teacher { get; set; }
     public string TeacherNeptunCode { get; set; }
     public List<Student> Students { get; set; } = new List<Student>();
+    public List<Exam> Exams { get; set; } = new();
+
     
     public Course(string name, string description, int credits, string semester, Teacher teacher)
     {

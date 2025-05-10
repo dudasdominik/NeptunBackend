@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NeptunBackend.Data;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace NeptunBackend.Migrations
 {
     [DbContext(typeof(NeptunDbContext))]
-    partial class NeptunDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250510105121_ChangeStuff")]
+    partial class ChangeStuff
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -281,7 +284,7 @@ namespace NeptunBackend.Migrations
             modelBuilder.Entity("NeptunBackend.Models.Exam", b =>
                 {
                     b.HasOne("NeptunBackend.Models.Course", "Course")
-                        .WithMany("Exams")
+                        .WithMany()
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -306,11 +309,6 @@ namespace NeptunBackend.Migrations
                     b.Navigation("Exam");
 
                     b.Navigation("Student");
-                });
-
-            modelBuilder.Entity("NeptunBackend.Models.Course", b =>
-                {
-                    b.Navigation("Exams");
                 });
 
             modelBuilder.Entity("NeptunBackend.Models.Exam", b =>
