@@ -9,11 +9,9 @@ namespace NeptunBackend.Controllers;
 public class TeacherController : ControllerBase
 {
     private readonly ITeacherService _teacherService;
-        private readonly ILogger<TeacherController> _logger;
-        public TeacherController(ITeacherService teacherService, ILogger<TeacherController> logger)
+        public TeacherController(ITeacherService teacherService)
         {
             _teacherService = teacherService;
-            _logger = logger;
         }
         
         [HttpGet("{neptunCode}")]
@@ -33,11 +31,8 @@ public class TeacherController : ControllerBase
         {
             var teachers = await _teacherService.GetAllTeachers();
 
-            _logger.LogInformation("Fetched {Count} teacher(s) from database.", teachers?.Count ?? 0);
-
             if (teachers == null || teachers.Count == 0)
             {
-                _logger.LogWarning("No teachers found in database.");
                 return NotFound();
             }
 
