@@ -15,4 +15,5 @@ public interface IStudentService
     Task<bool> DeleteStudent(string neptunCode);
     Task<Student> UpdateStudentPassword(string neptunCode, string currentPassword, string newPassword);
     Task<Student> EnrollCourse(string neptunCode, Guid courseId);
+    Task<string> LogIn(string neptunCode, string password);
 }

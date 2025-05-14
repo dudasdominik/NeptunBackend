@@ -10,9 +10,10 @@ namespace NeptunBackend.Services.Implementation;
 
 public class StudentService : NeptunService, IStudentService
 {
-    public StudentService(NeptunDbContext context) : base (context)
+    private readonly TokenService _tokenService;
+    public StudentService(NeptunDbContext context, TokenService service) : base (context)
     {
-       
+       _tokenService = service;
     }
     public async Task<Student> GetStudentByNeptunCode(string neptunCode)
     {
@@ -127,5 +128,22 @@ public class StudentService : NeptunService, IStudentService
         foundStudent.AddCourse(foundCourse);
         foundCourse.AddStudent(foundStudent);
         return foundStudent;
+    }
+
+    public async Task<string> LogIn(string neptunCode, string password)
+    {
+        var foundStudent = await GetStudentByNeptunCode(neptunCode);
+        if (foundStudent == null)
+        {
+            throw new Exception($"Student with neptun code {neptunCode} not found");
+        }
+        IPasswordHasher<Student> passwordHasher = new PasswordHasher<Student>();
+        var result = passwordHasher.VerifyHashedPassword(foundStudent, foundStudent.Password, password);
+        if (result != PasswordVerificationResult.Success)
+        {
+            throw new Exception($"Password is incorrect");
+        }
+        var token = _tokenService.GenerateToken(foundStudent);
+        return token;
     }
 }

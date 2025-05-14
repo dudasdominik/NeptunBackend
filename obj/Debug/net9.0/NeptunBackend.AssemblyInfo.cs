@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("NeptunBackend")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+abee62d824257797a8bb0044cf9078952d5897be")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+160ff4fb184b53a1f69a1a5654c4e847681e2ec6")]
 [assembly: System.Reflection.AssemblyProductAttribute("NeptunBackend")]
 [assembly: System.Reflection.AssemblyTitleAttribute("NeptunBackend")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

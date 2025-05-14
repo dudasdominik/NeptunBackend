@@ -30,6 +30,8 @@ public abstract class Person
     [Required]
     public DateTime BirthDate { get; set; }
 
+    public Role Role { get; set; } = new();
+
     
     protected Person(string firstName, string lastName, string email, string phone, string address, string password, DateTime birthDate)
     {

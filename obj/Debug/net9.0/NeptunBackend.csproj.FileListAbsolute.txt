@@ -134,3 +134,11 @@ C:\Users\Dominik\RiderProjects\NeptunBackend\bin\Debug\net9.0\Microsoft.Extensio
 C:\Users\Dominik\RiderProjects\NeptunBackend\bin\Debug\net9.0\DotNetEnv.dll
 C:\Users\Dominik\RiderProjects\NeptunBackend\bin\Debug\net9.0\Sprache.dll
 C:\Users\Dominik\RiderProjects\NeptunBackend\obj\Debug\net9.0\NeptunBackend.sourcelink.json
+C:\Users\Dominik\RiderProjects\NeptunBackend\bin\Debug\net9.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\Dominik\RiderProjects\NeptunBackend\bin\Debug\net9.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\Dominik\RiderProjects\NeptunBackend\bin\Debug\net9.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\Dominik\RiderProjects\NeptunBackend\bin\Debug\net9.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\Dominik\RiderProjects\NeptunBackend\bin\Debug\net9.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\Dominik\RiderProjects\NeptunBackend\bin\Debug\net9.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\Dominik\RiderProjects\NeptunBackend\bin\Debug\net9.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\Dominik\RiderProjects\NeptunBackend\bin\Debug\net9.0\System.IdentityModel.Tokens.Jwt.dll

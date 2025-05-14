@@ -1,4 +1,7 @@
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using NeptunBackend.Data;
 using NeptunBackend.Services;
 using NeptunBackend.Services.Implementation;
@@ -9,15 +12,30 @@ DotNetEnv.Env.Load();
 
 var connectionString = Environment.GetEnvironmentVariable("ConnectionStrings__DefaultConnection");
 
-if (string.IsNullOrWhiteSpace(connectionString))
-{
-    Console.WriteLine("❌ Connection string is NULL or empty.");
-    throw new Exception("Missing DB connection string!");
-}
-else
-{
-    Console.WriteLine($"✅ Connection string: {connectionString}");
-}
+var jwtKey = Environment.GetEnvironmentVariable("Jwt__Key");
+var keyBytes = Encoding.UTF8.GetBytes(jwtKey);
+
+
+builder.Services.AddAuthentication(options =>
+    {
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
+    .AddJwtBearer(options =>
+    {
+        options.RequireHttpsMetadata = false;
+        options.SaveToken = true;
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(keyBytes)
+        };
+    });
+
+builder.Services.AddAuthorization(); 
 
 
 builder.Services.AddDbContext<NeptunDbContext>(options =>
@@ -34,7 +52,9 @@ builder.Services.AddTransient<IStudentService, StudentService>();
 builder.Services.AddTransient<ITeacherService, TeacherService>();
 builder.Services.AddTransient<ICourseService, CourseService>();
 builder.Services.AddTransient<IExamService, ExamService>();
+builder.Services.AddTransient<IExamRegistrationService, ExamRegistrationService>();
 builder.Services.AddTransient<NeptunService>();
+builder.Services.AddScoped<TokenService>();
 
 
 var app = builder.Build();

@@ -85,18 +85,6 @@ public class StudentController : ControllerBase
     return Ok();
   }
   
-  [HttpPost("login")]
-  public async Task<IActionResult> LogInStudent(string neptunCode, string password)
-  {
-    
-    var loggedInStudent = await _studentService.LogInStudent(neptunCode, password);
-    if (loggedInStudent == null)
-    {
-      return NotFound();
-    }
-
-    return Ok(loggedInStudent);
-  }
   
   [HttpPut("updatePassword/{neptunCode}")]
   public async Task<IActionResult> UpdateStudentPassword(string neptunCode, string currentPassword, string newPassword)
@@ -120,6 +108,23 @@ public class StudentController : ControllerBase
     }
 
     return Ok(enrolledStudent);
+  }
+  [HttpPost("login")]
+  public async Task<IActionResult> LogIn([FromBody] LoginDetailsDTO loginDetails)
+  {
+    try
+    {
+      var token = await _studentService.LogIn(loginDetails.NeptunCode, loginDetails.Password);
+      if (token == null)
+      {
+        return BadRequest("Failed to login");
+      }
+      return Ok(new {token});
+    }
+    catch (Exception ex)
+    {
+      return Unauthorized(new {message = ex.Message});
+    }
   }
     
 }

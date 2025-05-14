@@ -5,9 +5,9 @@ using NeptunBackend.Services.Interfaces;
 
 namespace NeptunBackend.Services.Implementation;
 
-public class ExamRegistrationServiceService : NeptunService, IExamRegistrationService
+public class ExamRegistrationService : NeptunService, IExamRegistrationService
 {
-    public ExamRegistrationServiceService(NeptunDbContext context) : base(context)
+    public ExamRegistrationService(NeptunDbContext context) : base(context)
     {
     }
 
