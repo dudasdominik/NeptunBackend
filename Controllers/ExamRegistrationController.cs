@@ -94,6 +94,8 @@ public class ExamRegistrationController : ControllerBase
         }
         return Ok(examRegistrations);
     }
+   
+    
 
     
 }

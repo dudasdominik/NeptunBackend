@@ -1,4 +1,5 @@
 ﻿using NeptunBackend.Models;
+using NeptunBackend.Models.DTO;
 
 namespace NeptunBackend.Services.Interfaces;
 
@@ -13,5 +14,6 @@ public interface IExamRegistrationService
     Task<List<ExamRegistration>> GetExamRegistrationsByExamId(Guid examId);
     Task<List<ExamRegistration>> GetExamRegistrationsByCourseId(Guid courseId);
     Task<List<ExamRegistration>> GetExamRegistrationsByTeacherId(string teacherId);
-    
+    Task<ExamRegistration> GradeExam(int grade, Guid id);
+    Task<bool> TeacherOwnsExamReg(string teacherCode, Guid examId);
 }

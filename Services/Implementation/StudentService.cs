@@ -127,6 +127,9 @@ public class StudentService : NeptunService, IStudentService
         }
         foundStudent.AddCourse(foundCourse);
         foundCourse.AddStudent(foundStudent);
+        _context.Courses.Update(foundCourse);
+        _context.Students.Update(foundStudent);
+        await _context.SaveChangesAsync();
         return foundStudent;
     }
 
@@ -145,5 +148,59 @@ public class StudentService : NeptunService, IStudentService
         }
         var token = _tokenService.GenerateToken(foundStudent);
         return token;
+    }
+
+    public async Task<ExamRegistration> RegisterForExam(string neptunCode, Guid examId)
+    {
+        var student = await _context.Students
+            .Include(s => s.Courses)
+            .ThenInclude(c => c.Exams)
+            .FirstOrDefaultAsync(s => s.NeptunCode == neptunCode);
+
+        if (student == null)
+            throw new Exception($"Student with Neptun code {neptunCode} not found");
+
+        var exam = await _context.Exams
+            .Include(e => e.Course)
+            .FirstOrDefaultAsync(e => e.Id == examId);
+
+        if (exam == null)
+            throw new Exception($"Exam with id {examId} not found");
+
+        
+        var isRegisteredToCourse = student.Courses.Any(c => c.Id == exam.Course.Id);
+
+        if (!isRegisteredToCourse)
+            throw new Exception("Student is not registered for the course associated with this exam");
+
+        
+        bool alreadyRegistered = await _context.ExamRegistrations
+            .AnyAsync(er => er.StudentNeptunCode == neptunCode && er.ExamId == examId);
+
+        if (alreadyRegistered)
+            throw new Exception("Student is already registered for this exam");
+
+        var registration = new ExamRegistration
+        {
+            StudentNeptunCode = student.NeptunCode,
+            Student = student,
+            ExamId = exam.Id,
+            Exam = exam,
+            Grade = null
+        };
+
+        _context.ExamRegistrations.Add(registration);
+        await _context.SaveChangesAsync();
+
+        return registration;
+    }
+
+    public async Task<List<Course>> GetAllCourses(string neptunCode)
+    {
+        return await _context.Courses
+            .Include(c => c.Exams)
+            .Include(c => c.Students)
+            .Where(c => c.Students.Any(s => s.NeptunCode == neptunCode))
+            .ToListAsync();
     }
 }

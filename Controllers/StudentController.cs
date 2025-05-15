@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using NeptunBackend.Data;
 using NeptunBackend.Models;
 using NeptunBackend.Models.DTO;
@@ -6,6 +7,7 @@ using NeptunBackend.Services.Interfaces;
 
 namespace NeptunBackend.Controllers;
 [ApiController]
+[Authorize(Roles = "Student")]
 [Route("api/[controller]/")]
 public class StudentController : ControllerBase
 {
@@ -23,7 +25,6 @@ public class StudentController : ControllerBase
     var student = await _studentService.GetStudentByNeptunCode(neptunCode);
     if (student == null || student.NeptunCode != neptunCode)
     {
-      Console.Write("szar");
       return NotFound();
     }
     return Ok(student);
@@ -109,6 +110,7 @@ public class StudentController : ControllerBase
 
     return Ok(enrolledStudent);
   }
+  [AllowAnonymous]
   [HttpPost("login")]
   public async Task<IActionResult> LogIn([FromBody] LoginDetailsDTO loginDetails)
   {
@@ -125,6 +127,28 @@ public class StudentController : ControllerBase
     {
       return Unauthorized(new {message = ex.Message});
     }
+  }
+  [HttpPost("{neptunCode}/register/{courseId}")]
+  public async Task<IActionResult> RegisterForExam(string neptunCode, Guid courseId)
+  {
+    var registeredStudent = await _studentService.RegisterForExam(neptunCode, courseId);
+    if (registeredStudent == null)
+    {
+      return BadRequest("Failed to register student for exam");
+    }
+
+    return Ok(registeredStudent);
+  }
+  
+  [HttpGet("exams/{neptunCode}")]
+  public async Task<IActionResult> GetCoursesByNeptunCode(string neptunCode)
+  {
+    var exams = await _studentService.GetAllCourses(neptunCode);
+    if (exams == null || exams.Count == 0)
+    {
+      return NotFound();
+    }
+    return Ok(exams);
   }
     
 }

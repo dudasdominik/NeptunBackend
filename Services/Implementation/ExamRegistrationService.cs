@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NeptunBackend.Data;
 using NeptunBackend.Models;
+using NeptunBackend.Models.DTO;
 using NeptunBackend.Services.Interfaces;
 
 namespace NeptunBackend.Services.Implementation;
@@ -99,5 +100,33 @@ public class ExamRegistrationService : NeptunService, IExamRegistrationService
             .Where(er => er.Exam.Course.Teacher.NeptunCode == teacherId)
             .ToListAsync();
         return examRegistrations;
+    }
+
+    public async Task<ExamRegistration> GradeExam(int grade, Guid id)
+    {
+        var examRegistration = await _context.ExamRegistrations
+            .Include(er => er.Exam)
+            .Include(er => er.Student)
+            .FirstOrDefaultAsync(er => er.Id == id);
+        if (examRegistration == null)
+        {
+            throw new Exception($"Exam registration with id {id} not found");
+        }
+        examRegistration.Grade = grade;
+        await _context.SaveChangesAsync();
+        return examRegistration;
+    }
+
+    public async Task<bool> TeacherOwnsExamReg(string teacherCode, Guid examId)
+    {
+        var registration = await _context.ExamRegistrations
+            .Include(er => er.Exam)
+            .ThenInclude(e => e.Course)
+            .FirstOrDefaultAsync(er => er.Id == examId);
+        if (registration == null)
+        {
+            throw new Exception($"Exam registration with id {examId} not found");
+        }
+        return true;
     }
 }

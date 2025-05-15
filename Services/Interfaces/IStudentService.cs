@@ -16,4 +16,6 @@ public interface IStudentService
     Task<Student> UpdateStudentPassword(string neptunCode, string currentPassword, string newPassword);
     Task<Student> EnrollCourse(string neptunCode, Guid courseId);
     Task<string> LogIn(string neptunCode, string password);
+    Task<ExamRegistration> RegisterForExam(string neptunCode, Guid examId);
+    Task<List<Course>> GetAllCourses(string neptunCode);
 }
