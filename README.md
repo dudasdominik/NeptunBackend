@@ -7,14 +7,17 @@ Ez a projekt a Neptun rendszer backend része, amely C# (.NET) nyelven íródott
 * Hallgatók és oktatók kezelése
 * Tárgyak kezelése
 * Bejelentkezés / jelszó-módosítás
+* Órák létrehozása, jelentkezés, vizsga jelentkezés, osztályozás
 * EF Core-alapú migrációk és adattöltés
 * Swagger UI a dokumentációhoz és API teszteléshez
+* Token alapú hitelesítés
+* Jogosultságkezelés
 
 ---
 
 ## ⚡ Előfeltételek
 
-Telepítve kell legyen a gépeden:
+A következőknek telepítve kell, hogy legyenek a szmáítógépre.:
 
 * [.NET 9 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/9.0)
 * [Docker Desktop](https://www.docker.com/products/docker-desktop/) (Docker + Docker Compose)
@@ -36,6 +39,7 @@ Telepítve kell legyen a gépeden:
    PG_HOST=localhost
 
    ConnectionStrings__DefaultConnection=Host=localhost;Port=3254;Database=neptun;Username=root;Password=root
+   Jwt__Key=VfBDQqXtCSxd5WAjK6ehJZkEvHnTR79GU8wM4sNYarB3Rr8NcqvtdSxE2nzPbw5pV9mUjXQF6ZGWKMCLYuHaNxeuSGPRaXhJm8ZzCArD4jFQ5KYp7VksWEbL6gyUBMLr2GZv6gsb3MfYdA7nSHuaB8zejQmFPwhxWqtCcyXJzSNPVZ6u43KM95yBWwgmxqbvTaCnUrdXDRE8eYh7JA
    ```
 
 2. Futtassa az `init.bat` scriptet.
@@ -45,7 +49,6 @@ Telepítve kell legyen a gépeden:
    * Letörli a korábbi konténereket és volume-okat (ha vannak)
    * Elindítja a PostgreSQL konténert Dockerben
    * Végrehajtja az adatbázis migrációkat
-   * Opcionálisan feltölti dummy adatokkal (populate.sql)
 
 ---
 
@@ -54,7 +57,7 @@ Telepítve kell legyen a gépeden:
 1. Nyissa meg a projektet Riderben vagy Visual Studio-ban
 2. Állítsa be az indító projektet (ha kell)
 3. Indítsa el (F5 vagy Run)
-4. A Swagger UI elérhető lesz a [http://localhost](http://localhost:PORT/swagger)[:PORT](http://localhost:PORT/swagger)[/swagger](http://localhost:PORT/swagger) címen (a PORT a projekted portja)
+4. A Swagger UI elérhető lesz a [http://localhost](http://localhost:PORT/swagger)[:PORT](http://localhost:PORT/swagger)[/swagger](http://localhost:PORT/swagger) címen (a PORT a projekt portja)
 
 ---
 
@@ -67,7 +70,7 @@ Telepítve kell legyen a gépeden:
 
 ## 🎓 Projekt felépítése
 
-* `Models/` - EF Core entitás osztályok (Student, Teacher, Course)
+* `Models/` - EF Core entitás osztályok (Student, Teacher, Course, Exam, Administrator)
 * `Controllers/` - REST API kontrollerek
 * `Data/` - DbContext, konfigurációk
 * `Services/` - üzleti logika / jelszókezelés / beléptetés
@@ -76,8 +79,6 @@ Telepítve kell legyen a gépeden:
 
 ## ✨ További tervek
 
-* Token alapú hitelesítés
-* Jogosultságkezelés
 * Előrehaladás nyomon követése
 * Frontend kapcsolódás (React)
 
